@@ -89,7 +89,6 @@ cmp.setup {
 
 vim.opt.completeopt="menu,menuone,noselect"
 
-
 local on_attach = function(_, buffer)
 	map_buff(buffer, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
 	map_buff(buffer, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', map_options)
@@ -126,6 +125,7 @@ map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', 
 
 map('n', '<leader>w', ':w<CR>', map_options)
 map('n', 'Q', ':nohl<CR>', map_options)
+map('n', '<space>', ';', map_options) -- Preserve semicolon behaviour but in space
 
 map('n', '<C-j>', '<C-W>j', map_options)
 map('n', '<C-k>', '<C-W>k', map_options)
