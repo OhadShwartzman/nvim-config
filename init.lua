@@ -3,7 +3,6 @@ vim.call('plug#begin')
 
 Plug 'tpope/vim-surround'
 Plug 'gruvbox-community/gruvbox'
-Plug 'jlanzarotta/bufexplorer'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -43,6 +42,8 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.signcolumn = 'number'
 
+vim.opt.undofile = true
+
 vim.cmd 'augroup FUAD'
 	vim.cmd 'autocmd InsertEnter * :set norelativenumber'
 	vim.cmd 'autocmd InsertLeave * :set relativenumber'
@@ -55,13 +56,6 @@ vim.g.mapleader = ';'
 
 -- PLUGINS
 -- -- -- -- 
-
--- Plug Explorer
-vim.g.bufExplorerDefaultHelp=0
-vim.g.bufExplorerShowRelativePath=1
-vim.g.bufExplorerFindActive=1
-vim.g.bufExplorerSortBy='name'
-map('n', '<leader>o', ':BufExplorer<cr>', map_options)
 
 -- vim-cmp
 local cmp = require('cmp')
@@ -91,7 +85,7 @@ cmp.setup {
 
 vim.opt.completeopt="menu,menuone,noselect"
 
-local on_attach = function(_, buffer)
+local lsp_buf_setup = function(_, buffer)
 	map_buff(buffer, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
 	map_buff(buffer, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', map_options)
 	map_buff(buffer, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', map_options)
@@ -105,23 +99,41 @@ local on_attach = function(_, buffer)
 end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local language_servers = { 'rust_analyzer' }
+local language_servers = { }
 
 for _, server in ipairs(language_servers) do
 	require('lspconfig')[server].setup {
-		on_attach = on_attach,
-		capabilities = capabilities
+		on_attach = lsp_buf_setup,
+		capabilities = capabilities,
+		flags = {
+			debounce_text_changes = 150,
+		}
 	}
 end
 
--- Rust Tools
+-- Rust Configuration
 
-require('rust-tools').setup({})
+-- Specific rust lsp remaps
+local rust_lsp_setup = function(client, buffer)
+	lsp_buf_setup(client, buffer)
+	map_buff(buffer, 'n', '<leader>ca', '<cmd>RustCodeAction<CR>', map_options)
+end
+
+require('rust-tools').setup {
+	server = {
+		on_attach = rust_lsp_setup,
+		capabilities = capabilities,
+		flags = {
+			debounce_text_changes = 150,
+		}
+	}
+}
 
 -- Telescope
 
 map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', map_options)
 map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', map_options)
+map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', map_options)
 
 -- Treesitter Highlighting
 
