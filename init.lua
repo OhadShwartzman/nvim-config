@@ -25,26 +25,9 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 
 vim.call('plug#end')
 
-vim.cmd 'colorscheme gruvbox'
+require("ohad/settings")
 
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.cursorline = true
-
-vim.env.nowrap = true
-vim.env.nobackup = true
-vim.env.nowb = true
-vim.env.noswapfile = true
-
-vim.opt.smarttab = true
-
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.signcolumn = 'number'
-
-vim.opt.undofile = true
-
-vim.cmd 'augroup FUAD'
+vim.cmd 'augroup OHAD'
 	vim.cmd 'autocmd InsertEnter * :set norelativenumber'
 	vim.cmd 'autocmd InsertLeave * :set relativenumber'
 vim.cmd 'augroup END'
@@ -52,7 +35,12 @@ vim.cmd 'augroup END'
 local map = vim.api.nvim_set_keymap
 local map_buff = vim.api.nvim_buf_set_keymap
 local map_options = { noremap = true }
-vim.g.mapleader = ';'
+
+-- Set <space> as mapleader, used to use semicolon but the goto-next char search functionality is too important
+-- to give up.
+-- The nnoremap <space> <nop> is important since <space> is mapped to <right> by default.
+map('n', '<space>', '<nop>', map_options)
+vim.g.mapleader = ' '
 
 -- PLUGINS
 -- -- -- -- 
@@ -85,49 +73,8 @@ cmp.setup {
 
 vim.opt.completeopt="menu,menuone,noselect"
 
-local lsp_buf_setup = function(_, buffer)
-	map_buff(buffer, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
-	map_buff(buffer, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', map_options)
-	map_buff(buffer, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', map_options)
-	map_buff(buffer, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', map_options)
-	map_buff(buffer, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
-	map_buff(buffer, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', map_options)
-	map_buff(buffer, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', map_options)
-	map_buff(buffer, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', map_options)
-	map_buff(buffer, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', map_options)
-	map_buff(buffer, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], map_options)
-end
-
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local language_servers = { }
-
-for _, server in ipairs(language_servers) do
-	require('lspconfig')[server].setup {
-		on_attach = lsp_buf_setup,
-		capabilities = capabilities,
-		flags = {
-			debounce_text_changes = 150,
-		}
-	}
-end
-
--- Rust Configuration
-
--- Specific rust lsp remaps
-local rust_lsp_setup = function(client, buffer)
-	lsp_buf_setup(client, buffer)
-	map_buff(buffer, 'n', '<leader>ca', '<cmd>RustCodeAction<CR>', map_options)
-end
-
-require('rust-tools').setup {
-	server = {
-		on_attach = rust_lsp_setup,
-		capabilities = capabilities,
-		flags = {
-			debounce_text_changes = 150,
-		}
-	}
-}
+-- Import lsp configurations - LSP-esque mappings can be found there
+require('ohad/lsp')
 
 -- Telescope
 
@@ -152,12 +99,12 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- Remaps
+-- General Remaps
 
 map('n', '<leader>w', ':w<CR>', map_options)
 map('n', 'Q', ':nohl<CR>', map_options)
-map('n', '<space>', ';', map_options) -- Preserve semicolon behaviour but in space
 
+-- Easy split-window navigation
 map('n', '<C-j>', '<C-W>j', map_options)
 map('n', '<C-k>', '<C-W>k', map_options)
 map('n', '<C-h>', '<C-W>h', map_options)
