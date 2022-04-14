@@ -32,6 +32,13 @@ vim.cmd 'augroup OHAD'
 	vim.cmd 'autocmd InsertLeave * :set relativenumber'
 vim.cmd 'augroup END'
 
+vim.cmd [[
+	augroup YankHighlight
+		autocmd!
+		autocmd TextYankPost * silent! lua vim.highlight.on_yank({timeout=75, higroup='Visual'})
+	augroup end
+]]
+
 local map = vim.api.nvim_set_keymap
 local map_buff = vim.api.nvim_buf_set_keymap
 local map_options = { noremap = true }
