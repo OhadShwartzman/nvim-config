@@ -22,7 +22,7 @@ end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Language servers to use with the general remaps - no specific per-language customization
-local language_servers = { }
+local language_servers = { 'clangd', 'texlab' }
 
 for _, server in ipairs(language_servers) do
 	require('lspconfig')[server].setup {

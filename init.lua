@@ -1,36 +1,30 @@
-local Plug = vim.fn['plug#']
-vim.call('plug#begin')
+require('packer').startup(function()
+	use 'wbthomason/packer.nvim'
 
-Plug 'tpope/vim-surround'
-Plug 'gruvbox-community/gruvbox'
+	use 'tpope/vim-surround'
+	use 'gruvbox-community/gruvbox'
 
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'mfussenegger/nvim-dap'
+	use 'nvim-lua/popup.nvim'
+	use 'nvim-lua/plenary.nvim'
+	use 'nvim-telescope/telescope.nvim'
+	use 'mfussenegger/nvim-dap'
 
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
+	use 'neovim/nvim-lspconfig'
+	use 'hrsh7th/cmp-nvim-lsp'
+	use 'hrsh7th/cmp-buffer'
+	use 'hrsh7th/cmp-path'
+	use 'hrsh7th/cmp-cmdline'
+	use 'hrsh7th/nvim-cmp'
 
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
+	use 'hrsh7th/cmp-vsnip'
+	use 'hrsh7th/vim-vsnip'
 
-Plug 'simrat39/rust-tools.nvim'
+	use 'simrat39/rust-tools.nvim'
 
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
-
-vim.call('plug#end')
+	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+end)
 
 require("ohad/settings")
-
-vim.cmd 'augroup OHAD'
-	vim.cmd 'autocmd InsertEnter * :set norelativenumber'
-	vim.cmd 'autocmd InsertLeave * :set relativenumber'
-vim.cmd 'augroup END'
 
 vim.cmd [[
 	augroup YankHighlight
