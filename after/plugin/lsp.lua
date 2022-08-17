@@ -1,5 +1,35 @@
--- Shorten the neovim lua api function signatures
-local map = vim.api.nvim_set_keymap
+local cmp = require'cmp'
+cmp.setup {
+	snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },
+	mapping = {
+		['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+		['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+		['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+		['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+		['<C-e>'] = cmp.mapping({
+			i = cmp.mapping.abort(),
+			c = cmp.mapping.close(),
+		}),
+		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item.
+		['<C-n>'] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			end
+		end, { "i", "s" }),
+	},
+	sources = cmp.config.sources({
+		{ name = 'nvim_lsp' }
+	}, {
+		{ name = 'buffer' }
+	})
+}
+
+vim.opt.completeopt="menu,menuone,noselect"
+
 local map_buff = vim.api.nvim_buf_set_keymap
 local map_options = { noremap = true }
 
