@@ -1,5 +1,3 @@
-vim.cmd 'colorscheme gruvbox'
-
 vim.opt.cursorline = true
 
 vim.env.nowrap = true

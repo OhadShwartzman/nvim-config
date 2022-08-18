@@ -11,7 +11,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	end
 })
 
-local map = vim.api.nvim_set_keymap
 local map_options = { noremap = true }
 
 -- Set <space> as mapleader, used to use semicolon but the goto-next char search functionality is too important
