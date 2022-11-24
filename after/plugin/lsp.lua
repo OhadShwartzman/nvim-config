@@ -49,7 +49,7 @@ local lsp_buf_setup = function(_, buffer)
 	map_buff(buffer, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], map_options)
 end
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Language servers to use with the general remaps - no specific per-language customization
 local language_servers = { 'clangd', 'texlab' }
