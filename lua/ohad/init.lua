@@ -11,6 +11,25 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	end
 })
 
+-- Automatically unfold the command line when recording a macro
+-- cmd_reg_height_modifier = vim.api.nvim_create_augroup('CmdRegHeightModifier', {})
+-- 
+-- vim.api.nvim_create_autocmd('RecordingEnter', {
+-- 	group = cmd_reg_height_modifier,
+-- 	pattern = '*',
+-- 	callback = function()
+-- 		vim.opt.cmdheight = 1
+-- 	end
+-- })
+-- 
+-- vim.api.nvim_create_autocmd('RecordingLeave', {
+-- 	group = cmd_reg_height_modifier,
+-- 	pattern = '*',
+-- 	callback = function()
+-- 		vim.opt.cmdheight = 0
+-- 	end
+-- })
+
 local map_options = { noremap = true }
 
 -- Set <space> as mapleader, used to use semicolon but the goto-next char search functionality is too important
