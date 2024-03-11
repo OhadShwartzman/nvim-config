@@ -3,7 +3,7 @@
 require'nvim-treesitter.install'.prefer_git = true
 
 require'nvim-treesitter.configs'.setup {
-	ensure_installed = { "help", "lua", "rust", "toml", "c", "cpp" },
+	ensure_installed = { "lua", "rust", "toml", "c", "cpp" },
 	highlight = {
 		enable = true,
 		custom_captures = {

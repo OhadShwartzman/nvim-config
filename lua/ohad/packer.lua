@@ -19,7 +19,5 @@ require('packer').startup(function()
 	use 'hrsh7th/cmp-vsnip'
 	use 'hrsh7th/vim-vsnip'
 
-	use 'simrat39/rust-tools.nvim'
-
 	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 end)
